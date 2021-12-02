@@ -1,6 +1,7 @@
 ﻿using JamesBondGadetsEntity.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -54,8 +55,14 @@ namespace JamesBondGadetsEntity.Controllers
         }
 
         public ActionResult Delete(int id)
-        {         
-            return View("Index");
+        {
+            GadgetModel gadget = context.Gadgets.SingleOrDefault(g => g.Id == id);
+            context.Entry(gadget).State = EntityState.Deleted;
+            context.SaveChanges();
+            //instead of View, we want it to redirect the page back to gadgets
+
+            return Redirect("/Gadgets");
+
         }
 
         //action to submit and process the form
